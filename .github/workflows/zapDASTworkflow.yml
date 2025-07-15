@@ -24,10 +24,13 @@ jobs:
           docker run -d --name web-app -p 5000:5000 insecure-web-app
           sleep 10
 
+      - name: Zap output folder
+        run: mkdir zap-output
+
       - name: Run Scan
         run: |
           docker run --network host --rm \
-            -v $(pwd):/zap/wrk \
+            -v ${{ github.workspace  }}/zap-output:/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
             -t http://localhost:5000 \
             -a \
@@ -38,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zap-html-report
-          path: zap-report.html
+          path: zap-output/zap-report.html
 
       - name: Cleanup
         if: always()
