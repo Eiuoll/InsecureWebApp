@@ -1,1 +1,2 @@
-Flask==2.0.3     # ⚠️ older version with known issues
+Flask==2.0.3     # older version with known issues
+Werkzeug==2.0.3  # needed because of old flask version
