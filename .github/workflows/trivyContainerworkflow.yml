@@ -2,14 +2,24 @@ name: Trivy Container Scan
 on:
   push:
     branches: ['*']
-  pull_request: ['*']
+  pull_request:
+    branches: ['*']
+
 jobs:
-  build:
+  trivy-scan:
     name: Build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: list all files
+        run: ls -alh
 
       - name: Build an image from Dockerfile
         run: |
@@ -21,6 +31,9 @@ jobs:
           image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
           format: 'sarif'
           output: 'trivy-container-results.sarif'
+
+      - name: show sarif output
+        run: cat trivy-container-results.sarif
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
