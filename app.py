@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template_string, make_response
 
 app = Flask(__name__)
-app.secret_key = "hardcoded-secret-key"  # 🔥 hardcoded secret
+app.secret_key = "hardcoded-secret-key"
 
 @app.route('/')
 def home():
@@ -16,7 +16,6 @@ def home():
 @app.route('/search')
 def search():
     q = request.args.get("q", "")
-    # Reflected XSS vulnerability
     return render_template_string(f""" 
         <h1>Search Results</h1>
         <p>Your query was: <strong>{q}</strong></p>
@@ -25,7 +24,6 @@ def search():
 
 @app.route('/login')
 def login():
-    # Insecure cookie (missing HttpOnly and Secure)
     resp = make_response("Logged in – insecure cookie set!")
     resp.set_cookie("session", "fake-session-token")
     return resp
