@@ -1,0 +1,42 @@
+name: Trivy Security Scan
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+jobs:
+  trivy-scan:
+    name: Build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: list all files
+        run: ls -alh
+
+      - name: Trivy FS Scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-FS-results.sarif'
+          severity: 'CRITICAL,HIGH,UNKNOWN,LOW,MEDIUM'
+
+      - name: Show sarif output
+        run: cat trivy-FS-results.sarif
+
+      - name: Upload to security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-FS-results.sarif'
+

@@ -6,7 +6,7 @@ app.secret_key = "hardcoded-secret-key"  # 🔥 hardcoded secret
 @app.route('/')
 def home():
     return render_template_string("""
-        <h1>Vulnerable Search</h1>
+        <h1>Search</h1>
         <form action='/search' method='get'>
             <input name='q' placeholder='Type anything…'>
             <button type='submit'>Search</button>
