@@ -27,7 +27,7 @@ jobs:
       - name: Run Scan
         run: |
           docker run --network host --rm \
-            -v ${{ github.workspace  }}:/zap/wrk \
+            -v $(pwd):/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
             -t http://localhost:5000 \
             -a \
