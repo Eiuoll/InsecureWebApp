@@ -21,7 +21,7 @@ jobs:
 
       - name: Start app
         run: |
-          docker run -d --name web-app 5000:5000 insecure-web-app
+          docker run -d --name web-app -p 5000:5000 insecure-web-app
           sleep 10
 
       - name: Run Scan
