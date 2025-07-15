@@ -25,7 +25,9 @@ jobs:
           sleep 10
 
       - name: Zap output folder
-        run: mkdir zap-output
+        run: |
+          mkdir -p zap-output
+          chmod 777 zap-output 
 
       - name: Run Scan
         run: |
